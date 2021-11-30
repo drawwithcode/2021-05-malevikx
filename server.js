@@ -1,31 +1,39 @@
-console.log("up and running");
+console.log("node is running");
 
-let express = require("express"); //dichiarare libreria
+let express = require("express");
 
-let app = express(); //attivare libreria
+let socket = require("socket.io");
 
-let port = process.env.PORT || 3000; //definire la port che si vuole usare
-// || significa oppure, in questo modo puù funzionare sia su local che su heroku
+let app = express();
+
+let port = process.env.PORT || 3000;
+
 let server = app.listen(port);
-
-console.log("server is running on http://localhost:" + port);
 
 app.use(express.static("public"));
 
-let serverSocket = require("socket.io");
-
-let io = serverSocket(server);
+let io = socket(server);
 
 io.on("connection", newConnection);
 
-function newConnection(newSocket) {
-  console.log(newSocket.id);
-
-  newSocket.on("mouse", mouseMessage);
+function newConnection(socket) {
+  console.log("new connection: " + socket.client.id);
+  let clientColor = getRandomColor();
+  socket.emit("color", clientColor);
+  socket.broadcast.emit("newPlayer", clientColor);
+  socket.on("mouse", mouseMessage);
 
   function mouseMessage(dataReceived) {
-    console.log(dataReceived);
-
-    newSocket.broadcast.emit("mouseBroadcast", dataReceived);
+    console.log(socket.client.id, dataReceived);
+    socket.broadcast.emit("mouseBroadcast", dataReceived);
   }
+}
+
+function getRandomColor() {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }

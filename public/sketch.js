@@ -1,33 +1,94 @@
-let = clientSocket = io(); //attivare socket anche su client
+let socket = io();
+let myColor = "white";
+let eraseEnable = false;
 
-clientSocket.on("connect", newConnection); //event when the client connect to server execute funtion newCollection
-clientSocket.on("mouseBroadcast", newBroadcast);
+socket.on("connect", newConnection);
+socket.on("mouseBroadcast", drawOtherMouse);
+socket.on("color", setColor);
 
-function newConnection() {
-  console.log(clientSocket.id);
+function setColor(assignedColor) {
+  myColor = assignedColor;
 }
 
-function newBroadcast(data) {
-  console.log(data);
-  fill(0, 255, 0);
-  circle(data.x, data.y, 10);
+function newConnection() {
+  console.log("your id: " + socket.id);
+}
+
+function drawOtherMouse(data) {
+  push();
+  stroke(data.color);
+  strokeWeight(3);
+  line(data.x, data.y, data.x2, data.y2);
+  pop();
+}
+
+function preload() {
+  myImage1 = loadImage("./assets/settimana1.png");
+}
+
+function toggleOtherErase() {
+  if (eraseEnable) {
+    noErase();
+    eraseEnable = data.false;
+  } else {
+    erase();
+    eraseEnable = data.true;
+  }
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  background(220);
+  background("white");
+
+  push();
+  textSize(20);
+  fill("black");
+  toggleBtn = createButton("ERESE");
+  toggleBtn.position(400, 210);
+  toggleBtn.mouseClicked(toggleErase);
+  pop();
+
+  imageMode(CENTER);
+  push();
+  image(myImage1, width / 2, height / 2, windowWidth, windowHeight);
+  pop();
 }
 
 function draw() {
-  fill(255, 0, 0);
-  circle(mouseX, mouseY, 20);
+  push();
+  noStroke();
+
+  fill(myColor);
+  textSize(66);
+  textAlign(CENTER);
+  text("LA SETTIMANA ENIGMISTICA 2.0", width / 2, height / 8);
+  pop();
 }
 
-function mouseMoved() {
+function toggleErase() {
+  if (eraseEnable) {
+    noErase();
+    eraseEnable = false;
+  } else {
+    erase();
+    eraseEnable = true;
+  }
+}
+
+function mouseDragged() {
+  push();
+  stroke(myColor);
+  strokeWeight(3);
+  line(pmouseX, pmouseY, mouseX, mouseY);
+  pop();
+  //create the message
   let message = {
     x: mouseX,
     y: mouseY,
+    x2: pmouseX,
+    y2: pmouseY,
+    color: myColor,
   };
-
-  clientSocket.emit("mouse", message);
+  // send to the server
+  socket.emit("mouse", message);
 }
