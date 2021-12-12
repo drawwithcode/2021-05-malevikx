@@ -1,5 +1,5 @@
 let socket = io();
-let myColor = "white";
+let myColor = "green";
 let eraseEnable = false;
 
 socket.on("connect", newConnection);
@@ -23,7 +23,7 @@ function drawOtherMouse(data) {
 }
 
 function preload() {
-  myImage1 = loadImage("./assets/settimana1.png");
+  myImage1 = loadImage("./assets/sfondo.png");
 }
 
 function toggleOtherErase() {
@@ -43,8 +43,8 @@ function setup() {
   push();
   textSize(20);
   fill("black");
-  toggleBtn = createButton("ERESE");
-  toggleBtn.position(400, 210);
+  toggleBtn = createButton("ERASE");
+  toggleBtn.position(windowWidth - 100, windowHeight - 50);
   toggleBtn.mouseClicked(toggleErase);
   pop();
 
@@ -61,7 +61,7 @@ function draw() {
   fill(myColor);
   textSize(66);
   textAlign(CENTER);
-  text("LA SETTIMANA ENIGMISTICA 2.0", width / 2, height / 8);
+  text("LISTA DELLA SPESA", width / 2, height / 8);
   pop();
 }
 

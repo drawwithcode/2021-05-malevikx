@@ -1,4 +1,4 @@
-console.log("node is running");
+console.log("up and running");
 
 let express = require("express");
 
@@ -7,6 +7,8 @@ let socket = require("socket.io");
 let app = express();
 
 let port = process.env.PORT || 3000;
+
+console.log("server is running on http://localhost:" + port);
 
 let server = app.listen(port);
 
