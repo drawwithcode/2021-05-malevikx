@@ -1,6 +1,7 @@
 let socket = io();
 let myColor = "green";
 let eraseEnable = false;
+let penna;
 
 socket.on("connect", newConnection);
 socket.on("mouseBroadcast", drawOtherMouse);
@@ -23,7 +24,7 @@ function drawOtherMouse(data) {
 }
 
 function preload() {
-  myImage1 = loadImage("./assets/sfondo.png");
+  myImage1 = loadImage("./assets/sfondo4.png");
 }
 
 function toggleOtherErase() {
@@ -59,9 +60,9 @@ function draw() {
   noStroke();
 
   fill(myColor);
-  textSize(66);
-  textAlign(CENTER);
-  text("LISTA DELLA SPESA", width / 2, height / 8);
+  textSize(50);
+
+  text("non dimenticare nulla...", 100, 100);
   pop();
 }
 
