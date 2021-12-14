@@ -1,9 +1,10 @@
 let socket = io();
+let myColor = "white";
 let eraseEnable = false;
 var myFont;
 
 socket.on("connect", newConnection);
-socket.on("mouseBroadcast", disegnare);
+socket.on("mouseBroadcast", drawOtherMouse);
 socket.on("color", setColor);
 
 //colore casuale, diverso per ogni partecipante
@@ -16,9 +17,10 @@ function newConnection() {
 }
 
 //funzione per disegnare
-function disegnare(data) {
+function drawOtherMouse(data) {
   push();
   stroke(data.color);
+  strokeWeight(3);
   line(data.x, data.y, data.x2, data.y2);
   pop();
 }
@@ -44,9 +46,8 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   background("white");
 
-  push();
-
   //tasto per cancellare
+  push();
   fill("black");
   toggleBtn = createButton("ERASE");
   toggleBtn.position(windowWidth - 80, windowHeight - 40);
@@ -95,10 +96,9 @@ function toggleErase() {
 function mouseDragged() {
   push();
   stroke(myColor);
-  strokeWeight(8);
+  strokeWeight(3);
   line(pmouseX, pmouseY, mouseX, mouseY);
   pop();
-
   //create the message
   let message = {
     x: mouseX,

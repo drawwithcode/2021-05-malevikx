@@ -1,4 +1,4 @@
-console.log("up and running");
+console.log("node is running");
 
 let express = require("express");
 
@@ -8,9 +8,8 @@ let app = express();
 
 let port = process.env.PORT || 3000;
 
-console.log("server is running on http://localhost:" + port);
-
 let server = app.listen(port);
+console.log("server is running on http://localhost:" + port);
 
 app.use(express.static("public"));
 
@@ -31,7 +30,6 @@ function newConnection(socket) {
   }
 }
 
-//colore diverso ad ogni partecipante
 function getRandomColor() {
   var letters = "ABCDEFGHIJKLMNO";
   var color = "#";
