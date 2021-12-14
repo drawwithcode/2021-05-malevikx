@@ -31,8 +31,9 @@ function newConnection(socket) {
   }
 }
 
+//colore diverso ad ogni partecipante
 function getRandomColor() {
-  var letters = "0123456789ABCDEF";
+  var letters = "ABCDEFGHIJKLMNO";
   var color = "#";
   for (var i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
